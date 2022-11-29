@@ -1,16 +1,18 @@
 const { App } = require('@slack/bolt');
 
+require("dotenv").config();
+
 // Initializes your app with your bot token and signing secret
 const app = new App({
-  token: 'xoxb-4404371660787-4429955731153-AhOTvAYO5izySXOQqQsa78vn',
-  signingSecret: '7d80cf07af07056c10958cf533dff7bc',
-  socketMode: true, // add this
-  appToken: 'xapp-1-A04C2E3C1EX-4417413370772-f53a35b9fa92186af30dbe0747865a562246222bd317107758541abad6b5bb91',
-  port: process.env.PORT || 3000
+  token: process.env.SLACK_BOT_TOKEN,
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  socketMode: true,
+  appToken: process.env.SLACK_APP_TOKEN,
+  port: process.env.PORT || 3000,
 });
 
 // Listens to incoming messages that contain "hello"
-app.message('hello', async ({ message, say }) => {
+app.message(/^(hi|hello|hey).*/, async ({ message, say }) => {
     // say() sends a message to the channel where the event was triggered
     await say({
       blocks: [
@@ -18,7 +20,7 @@ app.message('hello', async ({ message, say }) => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `Hey there <@${message.user}>!`
+            text: `hola compadre <@${message.user}>!`
           },
           accessory: {
             type: "button",
